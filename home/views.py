@@ -3,6 +3,7 @@ from home.forms import RegisterForm
 from django.contrib import messages
 from home.backEnd import FaceRecognition
 from home.models import UserProfile
+from django.http import HttpResponseNotFound
 
 facerecognition = FaceRecognition()
 
@@ -38,11 +39,10 @@ def addFace(face_id):
 
 def login(request):
     face_id = facerecognition.recognizeFace()
-    print(face_id)
-    if face_id != 0:
-        return redirect('/home/welcome/'+ str(face_id))
+    if face_id is None:
+        return HttpResponseNotFound('<h1>No match found</h1>')
     else:
-        return 'No Match Found'
+        return redirect('/home/welcome/' + str(face_id))
 
 
 def welcome(request, face_id):

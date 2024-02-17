@@ -25,7 +25,7 @@
     <a class="notify-btn topright" href="/"> Go Home
     </a>       
     <div class="wrap-contact100">
-        <form class="contact100-form validate-form" action="/home/register/" method="POST">
+        <form class="contact100-form validate-form" action="/home/register/" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <span class="contact100-form-title">
                 Register Form

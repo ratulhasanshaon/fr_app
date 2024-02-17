@@ -108,7 +108,7 @@ class FaceRecognition:
 
         font = cv2.FONT_HERSHEY_SIMPLEX
 
-        confidence = ''
+        confidence = 0
 
         # Retriving names from database
         # data = conn.execute('''select * from facedata''')
@@ -131,7 +131,7 @@ class FaceRecognition:
             faces = faceCascade.detectMultiScale( 
                 gray,
                 scaleFactor = 1.2,
-                minNeighbors = 4,
+                minNeighbors = 5,
                 minSize = (int(minW), int(minH)),
             )
 
@@ -141,11 +141,9 @@ class FaceRecognition:
 
                 face_id, confidence = recognizer.predict(gray[y:y+h,x:x+w])
 
-                # Check if confidence is less than 100 ==> "0" is perfect match 
+                # Check if confidence is less then 100 ==> "0" is perfect match 
                 if (confidence < 100):
                     name = 'Detected'
-                    print('face_id: ',face_id)
-                    print('confidence: ',confidence)
                 else:
                     name = "Unknown"
                 
@@ -157,15 +155,11 @@ class FaceRecognition:
             k = cv2.waitKey(10) & 0xff # Press 'ESC' for exiting video
             if k == 27:
                 break
-            if confidence != '' and confidence > 80:
+            if confidence > 50:
                 break
 
         print("\n Exiting Program")
         cam.release()
         cv2.destroyAllWindows()
 
-
-        if confidence > 80:
-            return face_id  # If confidence is over 80, return 0
-        else:
-            return 0  # Otherwise, return the detected face_id
+        return face_id
